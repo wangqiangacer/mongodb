@@ -1,6 +1,7 @@
 package com.jacken.mongodb;
 
 import com.jacken.mongodb.domain.User;
+import com.jacken.mongodb.domain.UserLoginRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -47,5 +49,14 @@ public class MongodbApplicationTests    {
       for (User user : list) {
           System.out.println(user);
       }
+  }
+  @Test
+  public  void findListToMap(){
+      //list转map
+      Query query = new Query();
+      query.addCriteria(Criteria.where("day").gt(20190613));
+      List<UserLoginRecord> user_login_recode = mongoTemplate.find(query, UserLoginRecord.class, "user_login_recode");
+      List<String> collect = user_login_recode.stream().map(UserLoginRecord::getUserPhone).collect(Collectors.toList());
+      collect.stream().forEach(s -> System.out.println(s));
   }
 }
