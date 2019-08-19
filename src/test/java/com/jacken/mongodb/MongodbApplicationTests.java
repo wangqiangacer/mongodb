@@ -59,4 +59,15 @@ public class MongodbApplicationTests    {
       List<String> collect = user_login_recode.stream().map(UserLoginRecord::getUserPhone).collect(Collectors.toList());
       collect.stream().forEach(s -> System.out.println(s));
   }
+  @Test
+  public  void test002(){
+      List<UserLoginRecord> list = mongoTemplate.find(new Query(Criteria.where("userPhone").is("14778563421")), UserLoginRecord.class);
+      list.stream().forEach(userLoginRecord -> System.out.println(userLoginRecord));
+  }
+  @Test
+  public  void test003(){
+      //多条件组合查询
+      mongoTemplate.find(new Query(Criteria.where("userPhone").is("14778563421").and("channelName").is("测试19")),UserLoginRecord.class).stream().forEach(userLoginRecord -> System.out.println(userLoginRecord));
+
+  }
 }
